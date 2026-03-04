@@ -18,7 +18,7 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <div className="min-h-screen" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+    <div className="min-h-screen bg-[#faf5ee]" style={{ fontFamily: "'Nunito', sans-serif" }}>
       <ScrollToTop />
       <Navbar />
       <Routes>

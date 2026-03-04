@@ -1,225 +1,185 @@
-import { useState, useEffect, useRef } from 'react'
-import { MapPin, Clock, Phone, ExternalLink, ShoppingBag } from 'lucide-react'
+import { useEffect, useRef } from 'react'
+import { MapPin, Phone, Clock, ArrowUpRight, ExternalLink } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const garamond = "'Cormorant Garamond', serif"
+
 const locations = [
   {
     id: 'bozeman',
-    city: 'Bozeman',
-    tagline: 'The Valley Roost',
-    address: '1805 W Oak St #2',
-    cityState: 'Bozeman, MT 59718',
+    name: 'Bozeman',
+    tagline: 'Your neighborhood roastery',
+    address: '1805 West Oak St #2',
+    city: 'Bozeman, MT 59718',
     phone: '(406) 219-3159',
-    hours: {
-      'Mon – Sat': '7:00 am – 3:00 pm',
-      'Sunday': '8:00 am – 3:00 pm',
-    },
-    mapsUrl: 'https://maps.google.com/?q=1805+W+Oak+St+%232,+Bozeman,+MT+59718',
-    image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1200&q=80',
-    desc: 'Our Bozeman location brings Big Sky energy to the valley. Whether you\'re heading to Montana State or exploring downtown, we\'re your first cup of the morning.',
-    note: 'Pickup available via Square — order ahead and skip the wait.',
+    hours: [
+      { label: 'Monday – Saturday', time: '7:00 am – 3:00 pm' },
+      { label: 'Sunday', time: '8:00 am – 3:00 pm' },
+    ],
+    image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=900&q=80',
+    mapLink: 'https://maps.google.com/?q=1805+W+Oak+St+%232,+Bozeman,+MT+59718',
+    bg: '#243b2e',
+    accent: '#e8c98a',
   },
   {
     id: 'bigsky',
-    city: 'Big Sky',
-    tagline: 'The Mountain Original',
+    name: 'Big Sky',
+    tagline: 'Fuel for your mountain day',
     address: '80 Snowy Mountain Circle',
-    cityState: 'Big Sky, MT 59716',
+    city: 'Big Sky, MT 59716',
     phone: '(406) 219-3159',
-    hours: {
-      'Mon – Sat': '7:00 am – 3:00 pm',
-      'Sunday': '7:00 am – 1:00 pm',
-    },
-    mapsUrl: 'https://maps.google.com/?q=80+Snowy+Mountain+Circle,+Big+Sky,+MT+59716',
-    image: 'https://images.unsplash.com/photo-1520175480921-4edfa2983e0f?w=1200&q=80',
-    desc: 'Where it all started. Fuel up before a powder day, warm up after a long ski, or grab a bag of whole bean to take home from the mountain.',
-    note: 'Closes at 1:00 pm on Sundays — plan your morning accordingly.',
+    hours: [
+      { label: 'Monday – Saturday', time: '7:00 am – 3:00 pm' },
+      { label: 'Sunday', time: '7:00 am – 1:00 pm' },
+    ],
+    image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=900&q=80',
+    mapLink: 'https://maps.google.com/?q=80+Snowy+Mountain+Circle,+Big+Sky,+MT+59716',
+    bg: '#c4622d',
+    accent: '#faf5ee',
   },
 ]
 
 export default function Locations() {
-  const [activeDay, setActiveDay] = useState<'weekday' | 'sunday'>('weekday')
-  const pageRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLElement>(null)
+  const cardsRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from('.locations-header', {
+      gsap.from('.locs-header', {
         opacity: 0, y: 40, duration: 0.9, ease: 'power3.out',
       })
       gsap.from('.location-card', {
         opacity: 0, y: 50, duration: 0.9, stagger: 0.2, ease: 'power3.out',
-        scrollTrigger: { trigger: '.locations-grid', start: 'top 75%' }
+        scrollTrigger: { trigger: cardsRef.current, start: 'top 80%' }
       })
-      gsap.from('.hours-section', {
-        opacity: 0, y: 30, duration: 0.8,
-        scrollTrigger: { trigger: '.hours-section', start: 'top 80%' }
-      })
-    }, pageRef)
+    })
     return () => ctx.revert()
   }, [])
 
   return (
-    <main ref={pageRef} className="pt-[73px] bg-[#f0ece4] min-h-screen">
-      {/* Header */}
-      <div className="locations-header px-6 md:px-16 py-16 max-w-screen-xl mx-auto">
-        <span className="text-[#6b8c6b] text-xs tracking-[0.3em] uppercase block mb-4">Find Us</span>
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-          <h1 className="font-bold text-[#2e2e2e] text-5xl md:text-6xl leading-none">
+    <main className="pt-[73px] bg-[#faf5ee] min-h-screen">
+      {/* ── Header ── */}
+      <section ref={headerRef} className="px-8 md:px-16 py-20 border-b border-[#e8d5bc]">
+        <div className="locs-header max-w-screen-xl mx-auto">
+          <span className="text-[#c4622d] text-xs tracking-[0.3em] uppercase block mb-4" style={{ fontWeight: 600 }}>Come Say Hello</span>
+          <h1 className="text-[#243b2e] leading-tight" style={{ fontFamily: garamond, fontWeight: 600, fontSize: 'clamp(44px, 6vw, 80px)' }}>
             Two Locations.<br />
-            <span className="text-[#6b8c6b]">One Standard.</span>
+            <span style={{ fontStyle: 'italic', color: '#c4622d' }}>One Community.</span>
           </h1>
-          <p className="text-[#5a5a5a] font-light leading-relaxed max-w-sm">
-            Whether you're in Bozeman or Big Sky, you'll find the same fresh roast and
-            the same warm welcome.
+          <p className="text-[#5a4a3a] text-xl max-w-2xl mt-6" style={{ fontWeight: 300 }}>
+            Whether you're waking up in Bozeman or hitting the slopes in Big Sky, we're right there with you — ready to make your morning.
           </p>
         </div>
-      </div>
+      </section>
 
-      {/* Location cards */}
-      <div className="locations-grid px-6 md:px-16 pb-16 grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-screen-xl mx-auto">
-        {locations.map((loc) => (
-          <div key={loc.id} className="location-card bg-[#2e2e2e] overflow-hidden">
-            {/* Image */}
-            <div className="relative h-64 overflow-hidden">
-              <img
-                src={loc.image}
-                alt={`Caliber Coffee ${loc.city}`}
-                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                style={{ filter: 'saturate(0.6)' }}
-              />
-              <div className="absolute top-6 left-6">
-                <span className="bg-[#6b8c6b] text-[#f0ece4] text-xs tracking-[0.2em] uppercase px-4 py-2">
+      {/* ── Location Cards ── */}
+      <section ref={cardsRef} className="px-8 md:px-16 py-20">
+        <div className="max-w-screen-xl mx-auto space-y-12">
+          {locations.map((loc) => (
+            <div key={loc.id} className="location-card grid grid-cols-1 md:grid-cols-2 overflow-hidden">
+              {/* Image */}
+              <div className="relative overflow-hidden" style={{ minHeight: '360px' }}>
+                <img
+                  src={loc.image}
+                  alt={`Caliber Coffee ${loc.name}`}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Info panel */}
+              <div className="p-10 md:p-14 flex flex-col justify-center" style={{ backgroundColor: loc.bg }}>
+                <span className="text-xs tracking-[0.3em] uppercase block mb-3" style={{ color: loc.accent, fontWeight: 600 }}>
                   {loc.tagline}
                 </span>
-              </div>
-            </div>
+                <h2 className="mb-8" style={{ fontFamily: garamond, fontWeight: 600, color: loc.accent, fontSize: 'clamp(36px, 4vw, 60px)' }}>
+                  {loc.name}
+                </h2>
 
-            {/* Content */}
-            <div className="p-8 md:p-10">
-              <h2 className="font-bold text-[#f0ece4] text-3xl mb-2">{loc.city}</h2>
-              <p className="text-[#8a8a8a] font-light text-sm leading-relaxed mb-8">
-                {loc.desc}
-              </p>
-
-              <div className="space-y-4 mb-8">
-                <div className="flex items-start gap-3">
-                  <MapPin size={16} className="text-[#6b8c6b] flex-shrink-0 mt-0.5" />
-                  <div>
-                    <div className="text-[#f0ece4] text-sm">{loc.address}</div>
-                    <div className="text-[#8a8a8a] text-sm">{loc.cityState}</div>
+                <div className="space-y-5">
+                  <div className="flex items-start gap-3">
+                    <MapPin size={16} className="mt-0.5 flex-shrink-0" style={{ color: loc.accent }} />
+                    <div className="text-sm" style={{ color: loc.accent, opacity: 0.85, fontWeight: 300 }}>
+                      {loc.address}<br />{loc.city}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Phone size={16} className="flex-shrink-0" style={{ color: loc.accent }} />
+                    <a
+                      href="tel:4062193159"
+                      className="text-sm transition-opacity hover:opacity-100"
+                      style={{ color: loc.accent, opacity: 0.85, fontWeight: 300 }}
+                    >
+                      {loc.phone}
+                    </a>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Clock size={16} className="mt-0.5 flex-shrink-0" style={{ color: loc.accent }} />
+                    <div className="text-sm" style={{ fontWeight: 300 }}>
+                      {loc.hours.map((h) => (
+                        <div key={h.label} style={{ color: loc.accent, opacity: 0.85 }}>
+                          <span>{h.label}: </span>
+                          <span style={{ fontWeight: 500 }}>{h.time}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Phone size={16} className="text-[#6b8c6b] flex-shrink-0" />
-                  <a href={`tel:${loc.phone.replace(/\D/g, '')}`} className="text-[#f0ece4] text-sm hover:text-[#6b8c6b] transition-colors">
-                    {loc.phone}
+
+                <div className="flex flex-wrap gap-4 mt-10">
+                  <a
+                    href={loc.mapLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 text-sm transition-colors"
+                    style={{
+                      backgroundColor: loc.accent,
+                      color: loc.bg,
+                      fontWeight: 600,
+                    }}
+                  >
+                    Get Directions <ExternalLink size={14} />
+                  </a>
+                  <a
+                    href="https://caliber-coffee-109908.square.site"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 border px-6 py-3 text-sm transition-opacity hover:opacity-70"
+                    style={{ borderColor: loc.accent, color: loc.accent, fontWeight: 500 }}
+                  >
+                    Order Ahead <ArrowUpRight size={14} />
                   </a>
                 </div>
-                <div className="flex items-start gap-3">
-                  <Clock size={16} className="text-[#6b8c6b] flex-shrink-0 mt-0.5" />
-                  <div>
-                    {Object.entries(loc.hours).map(([day, time]) => (
-                      <div key={day} className="flex gap-4 text-sm mb-1">
-                        <span className="text-[#6a6a6a] w-20 flex-shrink-0">{day}</span>
-                        <span className="text-[#c9a84c] font-medium">{time}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {loc.note && (
-                <p className="text-[#6a6a6a] text-xs italic mb-8 border-l-2 border-[#6b8c6b] pl-3">
-                  {loc.note}
-                </p>
-              )}
-
-              <div className="flex flex-wrap gap-3">
-                <a
-                  href={loc.mapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 border border-[#4a4a4a] text-[#f0ece4] px-5 py-2.5 text-sm hover:border-[#6b8c6b] hover:text-[#6b8c6b] transition-colors"
-                >
-                  <ExternalLink size={13} />
-                  Get Directions
-                </a>
-                <a
-                  href="tel:4062193159"
-                  className="flex items-center gap-2 border border-[#4a4a4a] text-[#f0ece4] px-5 py-2.5 text-sm hover:border-[#6b8c6b] hover:text-[#6b8c6b] transition-colors"
-                >
-                  <Phone size={13} />
-                  Call Us
-                </a>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Consolidated hours section */}
-      <section className="hours-section bg-[#2e2e2e] py-20 px-6 md:px-16">
-        <div className="max-w-screen-xl mx-auto">
-          <span className="text-[#6b8c6b] text-xs tracking-[0.3em] uppercase block mb-4">Hours at a Glance</span>
-          <h2 className="font-bold text-[#f0ece4] text-4xl mb-10">When We're Open</h2>
-
-          <div className="flex gap-px mb-10">
-            {(['weekday', 'sunday'] as const).map((day) => (
-              <button
-                key={day}
-                onClick={() => setActiveDay(day)}
-                className={`px-8 py-3 text-sm font-medium tracking-wider transition-colors ${
-                  activeDay === day
-                    ? 'bg-[#6b8c6b] text-[#f0ece4]'
-                    : 'bg-[#3a3a3a] text-[#8a8a8a] hover:bg-[#424242]'
-                }`}
-              >
-                {day === 'weekday' ? 'Mon – Sat' : 'Sunday'}
-              </button>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {locations.map((loc) => {
-              const hoursEntry = Object.entries(loc.hours)
-              const selectedHours = activeDay === 'weekday' ? hoursEntry[0][1] : hoursEntry[1][1]
-              return (
-                <div key={loc.id} className="bg-[#252525] p-8">
-                  <h3 className="font-semibold text-[#f0ece4] text-xl mb-3">{loc.city}</h3>
-                  <div className="flex items-center gap-2 text-[#6a6a6a] text-sm mb-4">
-                    <MapPin size={14} className="text-[#6b8c6b]" />
-                    {loc.address}, {loc.cityState}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Clock size={14} className="text-[#6b8c6b]" />
-                    <span className="text-[#c9a84c] font-medium text-lg">{selectedHours}</span>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-
-          <div className="mt-10 flex items-center gap-6">
-            <a href="tel:4062193159" className="flex items-center gap-2 text-[#6b8c6b] hover:text-[#8aab8a] transition-colors text-sm">
-              <Phone size={16} />
-              (406) 219-3159
-            </a>
-            <span className="text-[#3a3a3a]">|</span>
-            <a
-              href="https://caliber-coffee-109908.square.site"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#c9a84c] text-[#2e2e2e] px-8 py-3 font-medium tracking-wide hover:bg-[#b8973b] transition-colors text-sm"
-            >
-              <ShoppingBag size={14} />
-              Order Online for Pickup
-            </a>
-          </div>
+          ))}
         </div>
       </section>
+
+      {/* ── Order Ahead Banner ── */}
+      <div className="bg-[#e8c98a] px-8 md:px-16 py-14">
+        <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <h3 className="text-[#243b2e] text-3xl mb-2" style={{ fontFamily: garamond, fontWeight: 600 }}>
+              Skip the Wait — Order Ahead
+            </h3>
+            <p className="text-[#5a3a20]" style={{ fontWeight: 300 }}>
+              Order online through our Square store and pick up at either location.
+            </p>
+          </div>
+          <a
+            href="https://caliber-coffee-109908.square.site"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-[#243b2e] text-[#e8c98a] px-10 py-4 hover:bg-[#1a2e22] transition-colors whitespace-nowrap"
+            style={{ fontWeight: 700 }}
+          >
+            Order Online <ArrowUpRight size={18} />
+          </a>
+        </div>
+      </div>
     </main>
   )
 }

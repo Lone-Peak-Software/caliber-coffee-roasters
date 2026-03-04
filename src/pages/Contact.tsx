@@ -1,256 +1,188 @@
-import { useState, useEffect, useRef, FormEvent } from 'react'
-import { Phone, MapPin, Instagram, Clock, Send, CheckCircle } from 'lucide-react'
+import { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
+import { Phone, Mail, MapPin, Clock, Instagram, ArrowUpRight } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const garamond = "'Cormorant Garamond', serif"
+
 export default function Contact() {
-  const [submitted, setSubmitted] = useState(false)
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  })
-  const pageRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLElement>(null)
+  const infoRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from('.contact-header', {
         opacity: 0, y: 40, duration: 0.9, ease: 'power3.out',
       })
-      gsap.from('.contact-info-block', {
-        opacity: 0, x: -40, duration: 0.9, stagger: 0.15, ease: 'power3.out',
-        scrollTrigger: { trigger: '.contact-grid', start: 'top 75%' }
+      gsap.from('.contact-block', {
+        opacity: 0, y: 40, duration: 0.8, stagger: 0.15, ease: 'power3.out',
+        scrollTrigger: { trigger: infoRef.current, start: 'top 80%' }
       })
-      gsap.from('.contact-form-wrapper', {
-        opacity: 0, x: 40, duration: 0.9, ease: 'power3.out',
-        scrollTrigger: { trigger: '.contact-grid', start: 'top 75%' }
-      })
-    }, pageRef)
+    })
     return () => ctx.revert()
   }, [])
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault()
-    // In production this would POST to a form service (Formspree, Netlify Forms, etc.)
-    // For now we show a success state
-    setSubmitted(true)
-  }
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
-  }
-
   return (
-    <main ref={pageRef} className="pt-[73px] bg-[#f0ece4] min-h-screen">
-      {/* Header */}
-      <div className="contact-header px-6 md:px-16 py-16 max-w-screen-xl mx-auto">
-        <span className="text-[#6b8c6b] text-xs tracking-[0.3em] uppercase block mb-4">Get in Touch</span>
-        <h1 className="font-bold text-[#2e2e2e] text-5xl md:text-6xl leading-none">
-          Say Hello
-        </h1>
-      </div>
+    <main className="pt-[73px] bg-[#faf5ee] min-h-screen">
+      {/* ── Header ── */}
+      <section ref={headerRef} className="px-8 md:px-16 py-20 border-b border-[#e8d5bc]">
+        <div className="contact-header max-w-screen-xl mx-auto">
+          <span className="text-[#c4622d] text-xs tracking-[0.3em] uppercase block mb-4" style={{ fontWeight: 600 }}>Reach Out</span>
+          <h1 className="text-[#243b2e] leading-tight" style={{ fontFamily: garamond, fontWeight: 600, fontSize: 'clamp(44px, 6vw, 80px)' }}>
+            We'd Love to<br />
+            <span style={{ fontStyle: 'italic', color: '#c4622d' }}>Hear From You.</span>
+          </h1>
+          <p className="text-[#5a4a3a] text-xl max-w-2xl mt-6" style={{ fontWeight: 300 }}>
+            Questions about our coffee, locations, events, or wholesale? Drop us a line — we're friendly, we promise.
+          </p>
+        </div>
+      </section>
 
-      {/* Main grid */}
-      <div className="contact-grid px-6 md:px-16 pb-20 grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-screen-xl mx-auto">
-        {/* Contact info */}
-        <div className="space-y-6">
+      {/* ── Contact Info ── */}
+      <section ref={infoRef} className="px-8 md:px-16 py-20">
+        <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Phone */}
-          <div className="contact-info-block bg-[#2e2e2e] p-8">
-            <Phone size={24} className="text-[#6b8c6b] mb-5" strokeWidth={1.5} />
-            <h3 className="font-semibold text-[#f0ece4] text-xl mb-3">Call Us</h3>
+          <div className="contact-block bg-[#243b2e] p-10">
+            <Phone size={28} className="text-[#e8c98a] mb-5" />
+            <h3 className="text-[#faf5ee] text-2xl mb-3" style={{ fontFamily: garamond, fontWeight: 600 }}>Call Us</h3>
+            <p className="text-[#7aaa7a] mb-5 text-sm" style={{ fontWeight: 300 }}>
+              The same number reaches both locations. Give us a ring any time we're open.
+            </p>
             <a
               href="tel:4062193159"
-              className="text-[#c9a84c] text-2xl font-medium hover:text-[#b8973b] transition-colors"
+              className="text-[#e8c98a] text-2xl hover:text-white transition-colors block"
+              style={{ fontFamily: garamond, fontWeight: 600 }}
             >
               (406) 219-3159
             </a>
-            <p className="text-[#6a6a6a] text-sm mt-3 font-light">
-              Best reached during business hours. We're happy to answer questions about
-              orders, roasting, catering, or wholesale inquiries.
+          </div>
+
+          {/* Email */}
+          <div className="contact-block bg-[#c4622d] p-10">
+            <Mail size={28} className="text-[#faf5ee] mb-5" />
+            <h3 className="text-[#faf5ee] text-2xl mb-3" style={{ fontFamily: garamond, fontWeight: 600 }}>Email Us</h3>
+            <p className="text-[#f4d9c0] mb-5 text-sm" style={{ fontWeight: 300 }}>
+              For wholesale inquiries, events, or general questions — we check our inbox daily.
             </p>
-          </div>
-
-          {/* Bozeman location */}
-          <div className="contact-info-block bg-[#e8e2d6] p-8">
-            <MapPin size={24} className="text-[#6b8c6b] mb-5" strokeWidth={1.5} />
-            <h3 className="font-semibold text-[#2e2e2e] text-xl mb-3">Bozeman</h3>
-            <p className="text-[#5a5a5a] text-sm mb-3">1805 W Oak St #2<br />Bozeman, MT 59718</p>
-            <div className="flex items-start gap-2 text-sm">
-              <Clock size={14} className="text-[#6b8c6b] flex-shrink-0 mt-0.5" />
-              <div className="text-[#6a6a6a] font-light">
-                <div>Mon – Sat: 7:00 am – 3:00 pm</div>
-                <div>Sunday: 8:00 am – 3:00 pm</div>
-              </div>
-            </div>
             <a
-              href="https://maps.google.com/?q=1805+W+Oak+St+%232,+Bozeman,+MT+59718"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block mt-5 text-[#6b8c6b] text-sm hover:text-[#5a7a5a] transition-colors border-b border-[#6b8c6b] pb-0.5"
+              href="mailto:calibercoffeemt@icloud.com"
+              className="text-[#faf5ee] text-lg hover:text-white transition-colors break-all"
+              style={{ fontFamily: garamond, fontWeight: 600 }}
             >
-              Get Directions →
+              calibercoffeemt@icloud.com
             </a>
           </div>
 
-          {/* Big Sky location */}
-          <div className="contact-info-block bg-[#e8e2d6] p-8">
-            <MapPin size={24} className="text-[#6b8c6b] mb-5" strokeWidth={1.5} />
-            <h3 className="font-semibold text-[#2e2e2e] text-xl mb-3">Big Sky</h3>
-            <p className="text-[#5a5a5a] text-sm mb-3">80 Snowy Mountain Circle<br />Big Sky, MT 59716</p>
-            <div className="flex items-start gap-2 text-sm">
-              <Clock size={14} className="text-[#6b8c6b] flex-shrink-0 mt-0.5" />
-              <div className="text-[#6a6a6a] font-light">
-                <div>Mon – Sat: 7:00 am – 3:00 pm</div>
-                <div>Sunday: 7:00 am – 1:00 pm</div>
-              </div>
-            </div>
-            <a
-              href="https://maps.google.com/?q=80+Snowy+Mountain+Circle,+Big+Sky,+MT+59716"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block mt-5 text-[#6b8c6b] text-sm hover:text-[#5a7a5a] transition-colors border-b border-[#6b8c6b] pb-0.5"
-            >
-              Get Directions →
-            </a>
-          </div>
-
-          {/* Social */}
-          <div className="contact-info-block bg-[#6b8c6b] p-8">
-            <Instagram size={24} className="text-[#f0ece4] mb-5" strokeWidth={1.5} />
-            <h3 className="font-semibold text-[#f0ece4] text-xl mb-3">Follow Along</h3>
+          {/* Instagram */}
+          <div className="contact-block bg-[#e8c98a] p-10">
+            <Instagram size={28} className="text-[#243b2e] mb-5" />
+            <h3 className="text-[#243b2e] text-2xl mb-3" style={{ fontFamily: garamond, fontWeight: 600 }}>Follow Along</h3>
+            <p className="text-[#5a3a20] mb-5 text-sm" style={{ fontWeight: 300 }}>
+              See what's brewing, catch seasonal specials, and meet the faces behind your cup.
+            </p>
             <a
               href="https://www.instagram.com/calibercoffeeroasters"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#f0ece4] text-lg hover:text-[#c8e0c8] transition-colors"
+              className="text-[#243b2e] text-xl hover:text-[#c4622d] transition-colors"
+              style={{ fontFamily: garamond, fontWeight: 600 }}
             >
               @calibercoffeeroasters
             </a>
-            <p className="text-[#c8e0c8] text-sm mt-3 font-light">
-              Seasonal drinks, roast updates, and a look at life in Big Sky country.
-            </p>
           </div>
         </div>
+      </section>
 
-        {/* Contact form */}
-        <div className="contact-form-wrapper">
-          <div className="bg-[#2e2e2e] p-8 md:p-12 h-full">
-            {submitted ? (
-              <div className="flex flex-col items-center justify-center h-full text-center py-16">
-                <CheckCircle size={48} className="text-[#6b8c6b] mb-6" strokeWidth={1.5} />
-                <h2 className="font-bold text-[#f0ece4] text-2xl mb-4">Message Received</h2>
-                <p className="text-[#8a8a8a] font-light leading-relaxed max-w-sm">
-                  Thanks for reaching out. We'll get back to you as soon as we can —
-                  usually within one business day.
-                </p>
-                <button
-                  onClick={() => setSubmitted(false)}
-                  className="mt-8 text-[#6b8c6b] text-sm hover:text-[#8aab8a] transition-colors border-b border-[#6b8c6b] pb-0.5"
+      {/* ── Locations Summary ── */}
+      <section className="bg-[#243b2e] px-8 md:px-16 py-20">
+        <div className="max-w-screen-xl mx-auto">
+          <div className="text-center mb-14">
+            <span className="text-[#e8c98a] text-xs tracking-[0.3em] uppercase block mb-4" style={{ fontWeight: 600 }}>Where to Find Us</span>
+            <h2 className="text-[#faf5ee]" style={{ fontFamily: garamond, fontWeight: 600, fontSize: 'clamp(36px, 4vw, 60px)' }}>
+              Two Ways to Get Your Fix
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {[
+              {
+                name: 'Bozeman',
+                address: '1805 West Oak St #2',
+                city: 'Bozeman, MT 59718',
+                hours: ['Mon–Sat: 7:00 am – 3:00 pm', 'Sunday: 8:00 am – 3:00 pm'],
+                mapLink: 'https://maps.google.com/?q=1805+W+Oak+St+%232,+Bozeman,+MT+59718',
+              },
+              {
+                name: 'Big Sky',
+                address: '80 Snowy Mountain Circle',
+                city: 'Big Sky, MT 59716',
+                hours: ['Mon–Sat: 7:00 am – 3:00 pm', 'Sunday: 7:00 am – 1:00 pm'],
+                mapLink: 'https://maps.google.com/?q=80+Snowy+Mountain+Circle,+Big+Sky,+MT+59716',
+              },
+            ].map((loc) => (
+              <div key={loc.name} className="bg-[#1e3228] p-10">
+                <h3 className="text-[#e8c98a] text-3xl mb-6" style={{ fontFamily: garamond, fontWeight: 600 }}>{loc.name}</h3>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <MapPin size={15} className="text-[#e8c98a] mt-0.5 flex-shrink-0" />
+                    <div className="text-[#7aaa7a] text-sm" style={{ fontWeight: 300 }}>
+                      {loc.address}<br />{loc.city}
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Clock size={15} className="text-[#e8c98a] mt-0.5 flex-shrink-0" />
+                    <div className="text-[#7aaa7a] text-sm" style={{ fontWeight: 300 }}>
+                      {loc.hours.map((h) => <div key={h}>{h}</div>)}
+                    </div>
+                  </div>
+                </div>
+                <a
+                  href={loc.mapLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 mt-6 text-[#e8c98a] border-b border-[#e8c98a] hover:text-white hover:border-white transition-colors text-sm"
+                  style={{ fontWeight: 500 }}
                 >
-                  Send another message
-                </button>
+                  Get Directions <ArrowUpRight size={13} />
+                </a>
               </div>
-            ) : (
-              <>
-                <h2 className="font-bold text-[#f0ece4] text-2xl mb-2">Send a Message</h2>
-                <p className="text-[#8a8a8a] text-sm font-light mb-8">
-                  Wholesale inquiries, catering, feedback, or just want to say hi — we read every message.
-                </p>
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div>
-                    <label className="block text-[#6a6a6a] text-xs tracking-widest uppercase mb-2">
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      placeholder="Your name"
-                      className="w-full bg-[#3a3a3a] border border-[#4a4a4a] text-[#f0ece4] px-4 py-3 text-sm placeholder-[#5a5a5a] focus:outline-none focus:border-[#6b8c6b] transition-colors"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[#6a6a6a] text-xs tracking-widest uppercase mb-2">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      placeholder="your@email.com"
-                      className="w-full bg-[#3a3a3a] border border-[#4a4a4a] text-[#f0ece4] px-4 py-3 text-sm placeholder-[#5a5a5a] focus:outline-none focus:border-[#6b8c6b] transition-colors"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[#6a6a6a] text-xs tracking-widest uppercase mb-2">
-                      Subject
-                    </label>
-                    <select
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleChange}
-                      required
-                      className="w-full bg-[#3a3a3a] border border-[#4a4a4a] text-[#f0ece4] px-4 py-3 text-sm focus:outline-none focus:border-[#6b8c6b] transition-colors appearance-none cursor-pointer"
-                    >
-                      <option value="" disabled>Select a topic</option>
-                      <option value="wholesale">Wholesale Inquiry</option>
-                      <option value="catering">Catering / Events</option>
-                      <option value="feedback">Feedback</option>
-                      <option value="order">Order Question</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-[#6a6a6a] text-xs tracking-widest uppercase mb-2">
-                      Message
-                    </label>
-                    <textarea
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      required
-                      rows={5}
-                      placeholder="What's on your mind?"
-                      className="w-full bg-[#3a3a3a] border border-[#4a4a4a] text-[#f0ece4] px-4 py-3 text-sm placeholder-[#5a5a5a] focus:outline-none focus:border-[#6b8c6b] transition-colors resize-none"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="flex items-center gap-2 bg-[#6b8c6b] text-white px-8 py-4 font-medium tracking-wide hover:bg-[#5a7a5a] transition-colors w-full justify-center"
-                  >
-                    <Send size={15} />
-                    Send Message
-                  </button>
-                </form>
-              </>
-            )}
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <Link
+              to="/locations"
+              className="inline-flex items-center gap-2 bg-[#c4622d] text-white px-10 py-4 hover:bg-[#b45020] transition-colors"
+              style={{ fontWeight: 600 }}
+            >
+              Full Location Details <ArrowUpRight size={16} />
+            </Link>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Online order strip */}
-      <div className="bg-[#c9a84c] px-6 md:px-16 py-12">
+      {/* ── Order CTA ── */}
+      <div className="bg-[#e8c98a] px-8 md:px-16 py-14">
         <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
-            <h3 className="font-bold text-[#2e2e2e] text-2xl mb-2">Prefer to Order Ahead?</h3>
-            <p className="text-[#4a3a10] font-light text-sm">
-              Skip the line and order online through Square for pickup at either location.
+            <h3 className="text-[#243b2e] text-3xl mb-2" style={{ fontFamily: garamond, fontWeight: 600 }}>
+              Ready to Order?
+            </h3>
+            <p className="text-[#5a3a20]" style={{ fontWeight: 300 }}>
+              Order ahead online — skip the line and pick up at either location.
             </p>
           </div>
           <a
             href="https://caliber-coffee-109908.square.site"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-shrink-0 flex items-center gap-2 bg-[#2e2e2e] text-[#f0ece4] px-10 py-4 font-medium tracking-wide hover:bg-[#3a3a3a] transition-colors text-sm"
+            className="inline-flex items-center gap-2 bg-[#243b2e] text-[#e8c98a] px-10 py-4 hover:bg-[#1a2e22] transition-colors whitespace-nowrap"
+            style={{ fontWeight: 700 }}
           >
-            Order Online
+            Order Online <ArrowUpRight size={18} />
           </a>
         </div>
       </div>

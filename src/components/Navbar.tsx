@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { Mountain, ShoppingBag, Menu, X } from 'lucide-react'
+import { Phone, Menu, X, ArrowUpRight } from 'lucide-react'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -19,7 +19,7 @@ export default function Navbar() {
 
   const navLinks = [
     { to: '/menu', label: 'Menu' },
-    { to: '/about', label: 'About' },
+    { to: '/about', label: 'Our Story' },
     { to: '/locations', label: 'Locations' },
     { to: '/contact', label: 'Contact' },
   ]
@@ -28,61 +28,63 @@ export default function Navbar() {
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? 'border-b border-[#d8d2c6] shadow-sm' : 'border-b border-[#d8d2c6]'
-        } bg-[#f0ece4]`}
+          scrolled ? 'shadow-sm' : ''
+        } bg-[#faf5ee] border-b border-[#e8d5bc]`}
       >
-        <div className="px-6 md:px-12 py-4 grid grid-cols-3 items-center max-w-screen-2xl mx-auto">
+        <div className="px-6 md:px-10 py-4 flex items-center justify-between max-w-screen-2xl mx-auto">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <Mountain
-              className="text-[#6b8c6b] transition-transform group-hover:scale-110"
-              size={22}
-              strokeWidth={1.5}
-            />
-            <div>
-              <span className="font-semibold text-[#2e2e2e] tracking-tight text-sm">Caliber Coffee</span>
-              <span className="hidden md:block text-[10px] tracking-[0.2em] text-[#8a8a8a] uppercase">Roasters</span>
-            </div>
+          <Link to="/" className="flex items-center gap-1 group">
+            <span
+              className="text-[#243b2e] text-xl"
+              style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 600 }}
+            >
+              Caliber Coffee
+            </span>
+            <span
+              className="text-[#c4622d] text-lg ml-1"
+              style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic' }}
+            >
+              Roasters
+            </span>
           </Link>
 
           {/* Desktop nav links */}
-          <div className="hidden md:flex items-center justify-center gap-8 text-sm text-[#6a6a6a] tracking-wide">
+          <div className="hidden md:flex items-center gap-8 text-sm text-[#5a4a3a]" style={{ fontWeight: 500 }}>
             {navLinks.map(({ to, label }) => (
               <NavLink
                 key={to}
                 to={to}
                 className={({ isActive }) =>
-                  `hover:text-[#6b8c6b] transition-colors relative ${
-                    isActive ? 'text-[#6b8c6b] font-medium' : ''
-                  }`
+                  `hover:text-[#c4622d] transition-colors ${isActive ? 'text-[#c4622d]' : ''}`
                 }
               >
-                {({ isActive }) => (
-                  <>
-                    {label}
-                    {isActive && (
-                      <span className="absolute -bottom-1 left-0 right-0 h-px bg-[#6b8c6b]" />
-                    )}
-                  </>
-                )}
+                {label}
               </NavLink>
             ))}
           </div>
 
           {/* CTA + mobile toggle */}
-          <div className="flex items-center justify-end gap-4">
+          <div className="flex items-center gap-4">
+            <a
+              href="tel:4062193159"
+              className="hidden md:flex items-center gap-2 border border-[#c4622d] text-[#c4622d] px-4 py-2 text-sm hover:bg-[#c4622d] hover:text-white transition-colors"
+              style={{ fontWeight: 500 }}
+            >
+              <Phone size={13} />
+              Call Us
+            </a>
             <a
               href="https://caliber-coffee-109908.square.site"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden md:flex items-center gap-2 bg-[#2e2e2e] text-[#f0ece4] px-5 py-2.5 text-sm font-medium tracking-wide hover:bg-[#6b8c6b] transition-colors"
+              className="hidden md:flex items-center gap-2 bg-[#c4622d] text-white px-5 py-2 text-sm hover:bg-[#b45020] transition-colors"
+              style={{ fontWeight: 600 }}
             >
-              <ShoppingBag size={14} />
-              Order Online
+              Order Online <ArrowUpRight size={14} />
             </a>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden text-[#2e2e2e] p-1"
+              className="md:hidden text-[#243b2e] p-1"
               aria-label="Toggle menu"
             >
               {mobileOpen ? <X size={22} /> : <Menu size={22} />}
@@ -93,7 +95,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       <div
-        className={`fixed inset-0 z-40 bg-[#f0ece4] flex flex-col pt-20 px-8 transition-transform duration-300 md:hidden ${
+        className={`fixed inset-0 z-40 bg-[#faf5ee] flex flex-col pt-20 px-8 transition-transform duration-300 md:hidden ${
           mobileOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -103,10 +105,11 @@ export default function Navbar() {
               key={to}
               to={to}
               className={({ isActive }) =>
-                `text-2xl font-medium tracking-tight transition-colors ${
-                  isActive ? 'text-[#6b8c6b]' : 'text-[#2e2e2e] hover:text-[#6b8c6b]'
+                `text-2xl transition-colors ${
+                  isActive ? 'text-[#c4622d]' : 'text-[#243b2e] hover:text-[#c4622d]'
                 }`
               }
+              style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 600 }}
             >
               {label}
             </NavLink>
@@ -115,16 +118,16 @@ export default function Navbar() {
             href="https://caliber-coffee-109908.square.site"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-[#2e2e2e] text-[#f0ece4] px-6 py-4 text-sm font-medium tracking-wide hover:bg-[#6b8c6b] transition-colors mt-4 w-fit"
+            className="flex items-center gap-2 bg-[#c4622d] text-white px-6 py-4 text-sm hover:bg-[#b45020] transition-colors mt-4 w-fit"
+            style={{ fontWeight: 600 }}
           >
-            <ShoppingBag size={16} />
-            Order Online
+            Order Online <ArrowUpRight size={16} />
           </a>
         </div>
-        <div className="mt-auto pb-8 text-sm text-[#8a8a8a]">
+        <div className="mt-auto pb-8 text-sm text-[#8a6a50]" style={{ fontWeight: 300 }}>
           <p className="mb-1">Bozeman · 1805 W Oak St #2</p>
           <p className="mb-3">Big Sky · 80 Snowy Mountain Circle</p>
-          <a href="tel:4062193159" className="text-[#6b8c6b]">(406) 219-3159</a>
+          <a href="tel:4062193159" className="text-[#c4622d]">(406) 219-3159</a>
         </div>
       </div>
     </>

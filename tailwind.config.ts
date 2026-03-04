@@ -8,15 +8,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        parchment: '#f0ece4',
-        charcoal: '#2e2e2e',
-        sage: '#6b8c6b',
-        gold: '#c9a84c',
-        'charcoal-light': '#252525',
-        border: '#d8d2c6',
+        'warm-cream': '#faf5ee',
+        'burnt-sienna': '#c4622d',
+        wheat: '#e8c98a',
+        forest: '#243b2e',
+        'dark-forest': '#1e3228',
       },
       fontFamily: {
-        grotesk: ['"Space Grotesk"', 'sans-serif'],
+        garamond: ['"Cormorant Garamond"', 'serif'],
+        nunito: ['Nunito', 'sans-serif'],
+      },
+      fontWeight: {
+        '300': '300',
+        '400': '400',
+        '500': '500',
+        '600': '600',
+        '700': '700',
       },
     },
   },
