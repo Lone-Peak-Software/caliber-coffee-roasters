@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --parchment: #f0ece4;
+  --charcoal: #2e2e2e;
+  --sage: #6b8c6b;
+  --gold: #c9a84c;
+  --border: #d8d2c6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--parchment);
+  color: var(--charcoal);
+  font-family: 'Space Grotesk', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--parchment);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sage);
+}
+
+/* GSAP initial states */
+.gsap-fade-up {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.gsap-fade-in {
+  opacity: 0;
+}
+
+.gsap-slide-left {
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+.gsap-slide-right {
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+/* Geometric accent lines */
+.geo-line {
+  position: relative;
+}
+
+.geo-line::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 32px;
+  height: 2px;
+  background-color: var(--sage);
+  transform: translateY(-50%);
+}
+
+/* Swiss grid container */
+.swiss-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 0;
+}
